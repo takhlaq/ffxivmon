@@ -938,6 +938,7 @@ namespace FFXIVMonReborn.Views
                         ret[i + 1] = 0xAD;
                         ret[i + 2] = 0xBE;
                         ret[i + 3] = 0xEF;
+                        i += 3;
                     }
                     else if (i + 31 < ret.Length && !string.IsNullOrWhiteSpace(paddedName))
                     {
