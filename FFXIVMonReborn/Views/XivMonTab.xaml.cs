@@ -1418,7 +1418,7 @@ namespace FFXIVMonReborn.Views
         #endregion
 
         #region Scripting
-        public void Scripting_RunOnCapture(bool silent = false, bool parseStructs = true)
+        public async void Scripting_RunOnCapture(bool silent = false, bool parseStructs = true)
         {
             var res = silent;
 
@@ -1432,7 +1432,7 @@ namespace FFXIVMonReborn.Views
             if (_mainWindow.ScriptProvider == null)
             {
                 _mainWindow.ScriptProvider = new ScriptingProvider();
-                _mainWindow.ScriptProvider.LoadScripts(System.IO.Path.Combine(Environment.CurrentDirectory, "Scripts"));
+                await _mainWindow.ScriptProvider.LoadScriptsAsync(System.IO.Path.Combine(Environment.CurrentDirectory, "Scripts"));
             }
 
             try
@@ -1455,7 +1455,7 @@ namespace FFXIVMonReborn.Views
             }
         }
 
-        private void Scripting_RunOnPacket(PacketEntry item, ScriptingProvider provider, bool parseStructs = true)
+        private async void Scripting_RunOnPacket(PacketEntry item, ScriptingProvider provider, bool parseStructs = true)
         {
             PacketEventArgs args = null;
 
@@ -1487,18 +1487,18 @@ namespace FFXIVMonReborn.Views
             }
 
             if(args != null)
-                provider.ExecuteScripts(null, args);
+                await provider.ExecuteScriptsAsync(null, args);
         }
 
         
-        private void RunSpecificScriptOnPacket(object sender, RoutedEventArgs e)
+        private async void RunSpecificScriptOnPacket(object sender, RoutedEventArgs e)
         {
             var scriptView = new ScriptSelectView("Scripts");
             scriptView.ShowDialog();
             var toLoad = scriptView.GetSelectedScripts();
 
             var provider = new ScriptingProvider();
-            provider.LoadScripts(toLoad);
+            await provider.LoadScriptsAsync(toLoad);
 
             var items = PacketListView.SelectedItems;
 
